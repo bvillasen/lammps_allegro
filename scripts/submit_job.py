@@ -116,6 +116,7 @@ module list\n
 '''
 
 app_run_cmd = f'''
+export WORK_DIR={run_dir}
 export LAMMPS_ALLEGRO_EXEC={lammps_exec}
 export PROFILER={profiler}
 export OMP_NUM_THREADS=7 

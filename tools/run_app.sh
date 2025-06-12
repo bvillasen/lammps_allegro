@@ -13,7 +13,7 @@ echo "rank: ${GLOBAL_RANK} ROCR_VISIBLE_DEVICES: ${ROCR_VISIBLE_DEVICES}"
 # echo "rank: ${GLOBAL_RANK} HIP_VISIBLE_DEVICES: ${HIP_VISIBLE_DEVICES}"
 
 if [[ "${PROFILER}" == "rocprof_stats" ]]; then
-  rocprof_dir=${RUN_DIR}/stats
+  rocprof_dir=${WORK_DIR}/stats
   mkdir ${rocprof_dir}
   PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprof_mpi_wrapper.sh $rocprof_dir results --stats --timestamp on --basenames on "
 elif [[ "${PROFILER}" == "rocprof_hip-trace" ]]; then
