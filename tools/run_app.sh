@@ -19,11 +19,11 @@ if [[ "${PROFILER}" == "rocprof_stats" ]]; then
 elif [[ "${PROFILER}" == "rocprof_hip-trace" ]]; then
   rocprof_dir=${WORK_DIR}/hip_trace
   mkdir ${rocprof_dir}
-  PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprof_mpi_wrapper.sh $rocprof_dir results --hip-trace --roctx-trace --trace-start off --basenames on"
+  PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprof_mpi_wrapper.sh $rocprof_dir results --hip-trace --roctx-trace --basenames on"
 elif [[ "${PROFILER}" == "rocprof_sys-trace" ]]; then
   rocprof_dir=${WORK_DIR}/sys_trace
   mkdir ${rocprof_dir}
-  PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprof_mpi_wrapper.sh $rocprof_dir results --sys-trace --roctx-trace --trace-start off --basenames on"
+  PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprof_mpi_wrapper.sh $rocprof_dir results --sys-trace --roctx-trace --basenames on"
 else
   PROFILER_CMD=""
 fi
