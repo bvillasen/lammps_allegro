@@ -28,8 +28,9 @@ else
   PROFILER_CMD=""
 fi
 
-# CMD="${LAMMPS_ALLEGRO_EXEC} -k on g 1 -sf kk -pk kokkos newton on neigh half -in demo.in"
-CMD="${PROFILER_CMD} ${LAMMPS_ALLEGRO_EXEC} -k on g 8 -sf kk -pk kokkos newton on neigh half -in demo.in"
+echo "PROFILER_CMD=${PROFILER_CMD}"
+
+CMD="srun -n ${N_MPI} -c 7 --gpus-per-node 8 ${PROFILER_CMD} ${LAMMPS_ALLEGRO_EXEC} -k on g 8 -sf kk -pk kokkos newton on neigh half -in demo.in"
 echo "CMD: ${CMD}"
 
 eval ${CMD} 

@@ -118,9 +118,8 @@ module list\n
 app_run_cmd = f'''
 export WORK_DIR={run_dir}
 export LAMMPS_ALLEGRO_EXEC={lammps_exec}
-export PROFILER={profiler}
 export OMP_NUM_THREADS=7 
-srun -n {n_mpi} -c 7 --gpus-per-node 8 {LAMMPS_ALLEGRO_ROOT}/tools/run_app.sh  > app_output.log
+N_MPI={n_mpi} PROFILER={profiler} {LAMMPS_ALLEGRO_ROOT}/tools/run_app.sh > app_output.log
 '''
 
 slurm_script_content = set_env_command
