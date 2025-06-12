@@ -11,7 +11,7 @@ if [[ "${SYSTEM}" = "frontier" ]]; then
   module load PrgEnv-gnu
   module load cray-mpich
   module load craype-accel-amd-gfx90a
-  module load rocm/6.4.0
+  module load rocm/6.3.1
   module load cmake
   module load cray-python
   export GPU_ARCH="gfx90a"
