@@ -28,9 +28,12 @@ else
   PROFILER_CMD=""
 fi
 
-echo "PROFILER_CMD=${PROFILER_CMD}"
+export LAMMPS_ALLEGRO_CMD="${LAMMPS_ALLEGRO_EXEC} -k on g 8 -sf kk -pk kokkos newton on neigh half -in demo.in"
 
-CMD="srun -n ${N_MPI} -c 7 --gpus-per-node 8 ${PROFILER_CMD} ${LAMMPS_ALLEGRO_EXEC} -k on g 8 -sf kk -pk kokkos newton on neigh half -in demo.in"
+echo "PROFILER_CMD=${PROFILER_CMD}"
+echo "LAMMPS_ALLEGRO_CMD=${LAMMPS_ALLEGRO_CMD}"
+
+CMD="srun -n ${N_MPI} -c 7 --gpus-per-node 8 ${PROFILER_CMD} ${LAMMPS_ALLEGRO_CMD}"
 echo "CMD: ${CMD}"
 
 eval ${CMD} 
