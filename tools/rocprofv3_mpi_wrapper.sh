@@ -46,8 +46,8 @@ if exists_in_list "$ROCPROF_RANKS" " " ${SLURM_PROCID}; then
   # ${rocprof} -d ${outdir} -o ${outdir}/${outfile} "${@:3}"
   ${rocprof} -d ${outdir} -o ${outfile} "${@:3}"
 else
-  echo "rank ${SLURM_PROCID} NOT running rocprofv3: ${MMOMA_CMD}"
-  ${MMOMA_CMD}
+  echo "rank ${SLURM_PROCID} NOT running rocprofv3: ${LAMMPS_ALLEGRO_CMD}"
+  ${LAMMPS_ALLEGRO_CMD}
 fi
 
 # ${rocprof} -d ${outdir} -o ${outdir}/${outfile} "${@:3}"
