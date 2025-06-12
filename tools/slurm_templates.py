@@ -28,6 +28,9 @@ frontier='''#!/bin/bash
 #SBATCH -J JOB_NAME
 #SBATCH --time=N_HRS:N_MIN:00
 #SBATCH --nodes=N_NODES
+#SBATCH --ntasks-per-node=N_TASK_PER_NODE
+#SBATCH --gpus-per-node=N_GPU_PER_NODE
+#SBATCH --cpus-per-task=N_CORES_PER_TASK
 #SBATCH -D RUNDIR
 #SBATCH -e RUNDIR/job_error.log
 #SBATCH -o RUNDIR/job_output.log
