@@ -7,6 +7,22 @@ NC='\033[0m'
 
 echo -e "Setting environment for system: ${GREEN}${SYSTEM} ${NC} "
 
+if [ -z "${LAMMPS_ALLEGRO_ROOT}" ]; then
+  CURRENT_DIR=$(pwd)
+  if [[ "$CURRENT_DIR" == *"lammps_allegro"* ]]; then
+    prefix=${CURRENT_DIR%%"lammps_allegro"*}
+    index=$(( ${#prefix} ))
+    export LAMMPS_ALLEGRO_ROOT="${CURRENT_DIR:0:index}lammps_allegro"
+    echo -e "lammps_allegro path: ${GREEN}${LAMMPS_ALLEGRO_ROOT} ${NC} " 
+  else
+    echo -e "${RED}ERROR: lammps_allegro path couldn't be find ${NC} "
+    echo -e "Set the path manually by setting: export LAMMPS_ALLEGRO_ROOT=<path to lammps_allegro directory> "
+    return
+  fi
+else
+  echo -e "lammps_allegro path: ${GREEN}${LAMMPS_ALLEGRO_ROOT} ${NC} "
+fi
+
 if [[ "${SYSTEM}" = "frontier" ]]; then
   module load PrgEnv-gnu
   module load cray-mpich
@@ -25,26 +41,11 @@ if [[ "${SYSTEM}" = "frontier" ]]; then
   export TORCHINDUCTOR_CPP_WRAPPER="1"
   export TORCHINDUCTOR_FREEZING="1"
 
+  export ROCPROF_COUNTERS_FILE=${LAMMPS_ALLEGRO_ROOT}/tools/roof-counters_gfx90a.txt
 
 else
   echo -e "${RED}System: ${SYSTEM} not in list of known systems. ${NC} "
   return
-fi
-
-if [ -z "${LAMMPS_ALLEGRO_ROOT}" ]; then
-  CURRENT_DIR=$(pwd)
-  if [[ "$CURRENT_DIR" == *"lammps_allegro"* ]]; then
-    prefix=${CURRENT_DIR%%"lammps_allegro"*}
-    index=$(( ${#prefix} ))
-    export LAMMPS_ALLEGRO_ROOT="${CURRENT_DIR:0:index}lammps_allegro"
-    echo -e "lammps_allegro path: ${GREEN}${LAMMPS_ALLEGRO_ROOT} ${NC} " 
-  else
-    echo -e "${RED}ERROR: lammps_allegro path couldn't be find ${NC} "
-    echo -e "Set the path manually by setting: export LAMMPS_ALLEGRO_ROOT=<path to lammps_allegro directory> "
-    return
-  fi
-else
-  echo -e "lammps_allegro path: ${GREEN}${LAMMPS_ALLEGRO_ROOT} ${NC} "
 fi
 
 

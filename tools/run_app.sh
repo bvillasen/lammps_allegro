@@ -24,6 +24,10 @@ elif [[ "${PROFILER}" == "rocprof_sys-trace" ]]; then
   rocprof_dir=${WORK_DIR}/sys_trace
   mkdir ${rocprof_dir}
   PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprof_mpi_wrapper.sh $rocprof_dir results --sys-trace --roctx-trace --basenames on"
+elif [[ "${PROFILER}" == "rocprof_counters" ]]; then
+  rocprof_dir=${WORK_DIR}/counters
+  mkdir ${rocprof_dir}
+  PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprof_mpi_wrapper.sh $rocprof_dir results -i ${ROCPROF_COUNTERS_FILE} --basenames on"    
 else
   PROFILER_CMD=""
 fi
