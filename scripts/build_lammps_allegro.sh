@@ -24,7 +24,7 @@ if [ ! -d "${LIBTORCH_DIR}" ]; then
   rm -r libtorch-*
 fi
 
-Download lammps
+# Download lammps
 if [ ! -d "${LAMMPS_ROOT}" ]; then
   echo "Cloning repository: lammps"
   git clone --depth=1 https://github.com/lammps/lammps $LAMMPS_ROOT
