@@ -27,7 +27,15 @@ elif [[ "${PROFILER}" == "rocprof_sys-trace" ]]; then
 elif [[ "${PROFILER}" == "rocprof_counters" ]]; then
   rocprof_dir=${WORK_DIR}/counters
   mkdir ${rocprof_dir}
-  PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprof_mpi_wrapper.sh $rocprof_dir results -i ${ROCPROF_COUNTERS_FILE} --basenames on"    
+  PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprof_mpi_wrapper.sh $rocprof_dir results -i ${ROCPROF_COUNTERS_FILE} --basenames on"
+elif [[ "${PROFILER}" == "rocprofv3_stats" ]]; then
+  rocprof_dir=${WORK_DIR}/stats
+  mkdir ${rocprof_dir}
+  PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprofv3_mpi_wrapper.sh $rocprof_dir results --kernel-trace --stats --truncate-kernels --"
+elif [[ "${PROFILER}" == "rocprofv3_counters" ]]; then
+  rocprof_dir=${WORK_DIR}/counters
+  mkdir ${rocprof_dir}
+  PROFILER_CMD="${LAMMPS_ALLEGRO_ROOT}/tools/rocprofv3_mpi_wrapper.sh $rocprof_dir results -i ${ROCPROF_COUNTERS_FILE} --truncate-kernels --"      
 else
   PROFILER_CMD=""
 fi
