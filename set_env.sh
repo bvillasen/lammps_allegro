@@ -23,11 +23,31 @@ else
   echo -e "lammps_allegro path: ${GREEN}${LAMMPS_ALLEGRO_ROOT} ${NC} "
 fi
 
+
 if [[ "${SYSTEM}" = "frontier" ]]; then
   module load PrgEnv-gnu
   module load cray-mpich
   module load craype-accel-amd-gfx90a
   module load rocm/6.3.1
+  module load cmake
+  module load cray-python
+  export GPU_ARCH="gfx90a"
+  export MPICH_GPU_SUPPORT_ENABLED=1
+
+  export CUDA_HOME=${ROCM_PATH}
+  export TORCHINDUCTOR_MAX_AUTOTUNE="1"
+  export TORCHINDUCTOR_LAYOUT_OPTIMIZATION="1"
+  export PYTORCH_MIOPEN_SUGGEST_NHWC="1"
+  export TORCHINDUCTOR_CPP_WRAPPER="1"
+  export TORCHINDUCTOR_FREEZING="1"
+
+  export ROCPROF_COUNTERS_FILE=${LAMMPS_ALLEGRO_ROOT}/tools/roof-counters_gfx90a.txt
+
+elif [[ "${SYSTEM}" = "lockhart_mi250x" ]]; then
+  module load PrgEnv-gnu
+  module load cray-mpich
+  module load craype-accel-amd-gfx90a
+  module load rocm/6.2.2
   module load cmake
   module load cray-python
   export GPU_ARCH="gfx90a"
@@ -43,11 +63,13 @@ if [[ "${SYSTEM}" = "frontier" ]]; then
 
   export ROCPROF_COUNTERS_FILE=${LAMMPS_ALLEGRO_ROOT}/tools/roof-counters_gfx90a.txt
 
+
 else
   echo -e "${RED}System: ${SYSTEM} not in list of known systems. ${NC} "
   return
 fi
 
+export LAMMPS_ALLEGRO_SYSTEM=${SYSTEM} 
 
 # Set a python virtual environment
 pyenv_dir=${LAMMPS_ALLEGRO_ROOT}/pyenv
