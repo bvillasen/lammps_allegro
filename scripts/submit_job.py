@@ -5,7 +5,6 @@ import time
 import argparse
 
 HOME = os.getenv('HOME')
-DUAL_ROOT = os.getenv('DUAL_ROOT', None)
 LAMMPS_ALLEGRO_ROOT = os.getenv('LAMMPS_ALLEGRO_ROOT', None)
 if not LAMMPS_ALLEGRO_ROOT:
   print("The LAMMPS_ALLEGRO_ROOT environment variable should be set ")
@@ -15,7 +14,7 @@ if not LAMMPS_ALLEGRO_ROOT:
 sys.path.append(f'{LAMMPS_ALLEGRO_ROOT}/tools')
 import slurm_templates 
 
-parser = argparse.ArgumentParser( description="DualSPH SLURM script generator.")
+parser = argparse.ArgumentParser( description="LAMPPS+Allegro SLURM script generator.")
 parser.add_argument('--system', dest='system', type=str, help='System for the run.', default='lockhart_mi250x' )
 parser.add_argument('--work_dir', dest='work_dir', type=str, help='Path of the work directory.', default=None )
 parser.add_argument('--n_nodes', dest='n_nodes', type=int, help='Number of nodes for the run.', default=1 )
@@ -85,7 +84,7 @@ if system == 'lockhart_mi250x':
   n_threads_per_core = 1
 
 elif system == 'frontier':
-  n_hrs, n_min = 2, 0
+  n_hrs, n_min = 0, 10
   slurm_template = slurm_templates.frontier
   slurm_partition = ""
   n_nodes = n_nodes
