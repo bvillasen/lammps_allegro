@@ -84,7 +84,7 @@ if system == 'lockhart_mi250x':
   n_threads_per_core = 1
 
 elif system == 'frontier':
-  n_hrs, n_min = 2, 0
+  n_hrs, n_min = 0, 15
   slurm_template = slurm_templates.frontier
   slurm_partition = ""
   n_nodes = n_nodes
