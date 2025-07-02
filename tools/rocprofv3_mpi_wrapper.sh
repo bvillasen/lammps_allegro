@@ -31,8 +31,8 @@ echo "Unknown MPI layer detected! Must use OpenMPI, MVAPICH, or SLURM"
 exit 1
 fi
  
-rocprof="${ROCM_PATH}/bin/rocprofv3"
-# rocprof="/opt/rocm-6.3.1/bin/rocprofv3"
+# rocprof="${ROCM_PATH}/bin/rocprofv3"
+rocprof="/opt/rocm-6.4.1/bin/rocprofv3"
 
 pid="$$"
 outdir="${outdir}/rank_${MPI_RANK}"
