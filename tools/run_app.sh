@@ -12,6 +12,16 @@ echo "rank: ${GLOBAL_RANK} ROCR_VISIBLE_DEVICES: ${ROCR_VISIBLE_DEVICES}"
 # export HIP_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 # echo "rank: ${GLOBAL_RANK} HIP_VISIBLE_DEVICES: ${HIP_VISIBLE_DEVICES}"
 
+if [[ "${LAMMPS_ALLEGRO_SYSTEM}" == "frontier" ]]; then
+  SRUN="srun"
+  AFFINITY="-c 7 --gpus-per-node 8"
+elif [[ "${LAMMPS_ALLEGRO_SYSTEM}" == "lockhart_mi250X" ]]; then
+  SRUN="srun"
+  AFFINITY="-c 8 --gpus-per-node 8"
+fi
+
+
+
 if [[ "${PROFILER}" == "rocprof_stats" ]]; then
   rocprof_dir=${WORK_DIR}/stats
   mkdir ${rocprof_dir}
@@ -45,7 +55,7 @@ export LAMMPS_ALLEGRO_CMD="${LAMMPS_ALLEGRO_EXEC} -k on g 8 -sf kk -pk kokkos ne
 echo "PROFILER_CMD=${PROFILER_CMD}"
 echo "LAMMPS_ALLEGRO_CMD=${LAMMPS_ALLEGRO_CMD}"
 
-CMD="srun -n ${N_MPI} -c 7 --gpus-per-node 8 ${PROFILER_CMD} ${LAMMPS_ALLEGRO_CMD}"
+CMD="srun -n ${N_MPI} ${AFFINITY} ${PROFILER_CMD} ${LAMMPS_ALLEGRO_CMD}"
 echo "CMD: ${CMD}"
 
 eval ${CMD} 
