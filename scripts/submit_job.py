@@ -21,6 +21,7 @@ parser.add_argument('--n_nodes', dest='n_nodes', type=int, help='Number of nodes
 parser.add_argument('--n_mpi', dest='n_mpi_per_node', type=int, help='Number of MPI ranks per node for the run.', default=1 )
 parser.add_argument('--profiler', dest='profiler', type=str, help='Type of profiler to use', default=None )
 parser.add_argument('--debug', dest='debug', type=bool, help='Use the debug queue in Frontier', default=False )
+parser.add_argument('--omnistat', dest='omnistat', type=bool, help='Use Omnsitat', default=False )
 args = parser.parse_args()
 
 system = args.system
@@ -38,6 +39,7 @@ n_nodes = args.n_nodes
 n_mpi_per_node = args.n_mpi_per_node
 n_mpi = n_mpi_per_node * n_nodes
 debug_queue = args.debug
+use_omnistat = args.omnistat
 
 profiler = ''
 if args.profiler is not None:
@@ -122,7 +124,27 @@ N_MPI={n_mpi} PROFILER={profiler} {LAMMPS_ALLEGRO_ROOT}/tools/run_app.sh > app_o
 '''
 
 slurm_script_content = set_env_command
+
+if use_omnistat:
+  slurm_script_content += '''
+export OMNISTAT_VICTORIA_DATADIR=/tmp/omnistat/${SLURM_JOB_ID}
+ml use /autofs/nccs-svm1_sw/crusher/amdsw/modules
+ml omnistat-wrapper/1.6.0
+${OMNISTAT_WRAPPER} usermode --start --interval 0.1
+'''
+
+
 slurm_script_content += app_run_cmd
+
+if use_omnistat:
+  slurm_script_content += '''
+# Finish Omnistat, generate summary pdf and copy database
+${OMNISTAT_WRAPPER} usermode --stopexporters
+${OMNISTAT_WRAPPER} query --interval 0.1 --job ${SLURM_JOB_ID} --pdf omnistat.${SLURM_JOB_ID}.pdf
+${OMNISTAT_WRAPPER} usermode --stopserver
+mv /tmp/omnistat/${SLURM_JOB_ID} data_omnistat.${SLURM_JOB_ID}
+'''
+
 
 slurm_script = slurm_template 
 slurm_script = slurm_script.replace( 'SLURM_SCRIPT_CONTENT', slurm_script_content)
