@@ -34,6 +34,9 @@ if [[ "${SYSTEM}" = "frontier" ]]; then
   export GPU_ARCH="gfx90a"
   export MPICH_GPU_SUPPORT_ENABLED=1
 
+  export LAMMPS_ALLEGRO_MPICXX=$(which CC)
+  export LAMMPS_ALLEGRO_CXX=${ROCM_PATH}/bin/hipcc
+
   export CUDA_HOME=${ROCM_PATH}
   export TORCHINDUCTOR_MAX_AUTOTUNE="1"
   export TORCHINDUCTOR_LAYOUT_OPTIMIZATION="1"
@@ -52,7 +55,27 @@ elif [[ "${SYSTEM}" = "lockhart_mi250x" ]]; then
   module load cray-python
   export GPU_ARCH="gfx90a"
 
+  export LAMMPS_ALLEGRO_MPICXX=$(which CC)
+  export LAMMPS_ALLEGRO_CXX=${ROCM_PATH}/bin/hipcc
+
   export MPICH_GPU_SUPPORT_ENABLED=1
+
+  export CUDA_HOME=${ROCM_PATH}
+  export TORCHINDUCTOR_MAX_AUTOTUNE="1"
+  export TORCHINDUCTOR_LAYOUT_OPTIMIZATION="1"
+  export PYTORCH_MIOPEN_SUGGEST_NHWC="1"
+  export TORCHINDUCTOR_CPP_WRAPPER="1"
+  export TORCHINDUCTOR_FREEZING="1"
+
+  export ROCPROF_COUNTERS_FILE=${LAMMPS_ALLEGRO_ROOT}/tools/roof-counters_gfx90a.txt
+
+elif [[ "${SYSTEM}" = "thera_mi300x" ]]; then
+  module load rocm/6.3.4
+  module load python/3.10.14
+  export GPU_ARCH="gfx942"
+
+  export LAMMPS_ALLEGRO_MPICXX=/home/bvillase/util/openmpi/rocm6.4.1/install/ompi/bin/mpicxx
+  export LAMMPS_ALLEGRO_CXX=${ROCM_PATH}/bin/hipcc
 
   export CUDA_HOME=${ROCM_PATH}
   export TORCHINDUCTOR_MAX_AUTOTUNE="1"

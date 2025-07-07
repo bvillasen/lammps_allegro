@@ -18,6 +18,9 @@ if [[ "${LAMMPS_ALLEGRO_SYSTEM}" == "frontier" ]]; then
 elif [[ "${LAMMPS_ALLEGRO_SYSTEM}" == "lockhart_mi250X" ]]; then
   SRUN="srun"
   AFFINITY="-c 8 --gpus-per-node 8"
+elif [[ "${LAMMPS_ALLEGRO_SYSTEM}" == "thera_mi300x" ]]; then
+  SRUN="/home/bvillase/util/openmpi/rocm6.4.1/install/ompi/bin/mpirun  " 
+  AFFINITY="--mca pml ucx -x UCX_PROTO_ENABLE=n -x UCX_ROCM_COPY_LAT=2e-6 -x UCX_ROCM_IPC_MIN_ZCOPY=4096 "  
 fi
 
 
@@ -55,7 +58,7 @@ export LAMMPS_ALLEGRO_CMD="${LAMMPS_ALLEGRO_EXEC} -k on g 8 -sf kk -pk kokkos ne
 echo "PROFILER_CMD=${PROFILER_CMD}"
 echo "LAMMPS_ALLEGRO_CMD=${LAMMPS_ALLEGRO_CMD}"
 
-CMD="srun -n ${N_MPI} ${AFFINITY} ${PROFILER_CMD} ${LAMMPS_ALLEGRO_CMD}"
+CMD="${SRUN} -n ${N_MPI} ${AFFINITY} ${PROFILER_CMD} ${LAMMPS_ALLEGRO_CMD}"
 echo "CMD: ${CMD}"
 
 eval ${CMD} 

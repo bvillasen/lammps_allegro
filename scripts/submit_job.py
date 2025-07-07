@@ -96,6 +96,17 @@ elif system == 'frontier':
   n_threads_per_core = 1
   slurm_options = '#SBATCH -A VEN114 \n'  
   if debug_queue: slurm_options += '#SBATCH -q debug \n'
+
+elif system == 'thera_mi300x':
+  n_hrs, n_min = 0, 15
+  # slurm_template = slurm_templates.lockhart
+  slurm_template = slurm_templates.no_slurm
+  slurm_partition = "#SBATCH -p MI300x"
+  n_nodes = n_nodes
+  n_mpi_per_node = n_mpi_per_node
+  n_gpu_per_node = 8
+  n_cores_per_task = 7
+  n_threads_per_core = 1  
 else:   
   print(f'ERROR: System {system} is not supported.')
   exit(1)
@@ -112,7 +123,7 @@ for file_name in os.listdir(data_dir):
 
 set_env_command = f'''
 # Set the environment
-SYSTEM={system} source {LAMMPS_ALLEGRO_ROOT}/scripts/set_env.sh 
+SYSTEM={system} source {LAMMPS_ALLEGRO_ROOT}/set_env.sh 
 module list\n
 '''
 

@@ -43,11 +43,13 @@ fi
 
 echo "Building lammps"
 rm -r ${LAMMPS_ROOT}/build
-MPICXX=$(which CC)
-# MPICXX=${ROCM_PATH}/bin/hipcc
-CXX=${ROCM_PATH}/bin/hipcc 
+
+
+MPICXX=$LAMMPS_ALLEGRO_MPICXX
+CXX=$LAMMPS_ALLEGRO_CXX
 echo "MPICXX: ${MPICXX}"
 echo "CXX: ${CXX}"
+echo "GPU_ARCH: ${GPU_ARCH}"
 
 # TORCH_PATH=$(python -c 'import torch;print(torch.utils.cmake_prefix_path)')
 TORCH_PATH="${LAMMPS_ALLEGRO_ROOT}/lib/libtorch"
@@ -64,7 +66,7 @@ cmake -DBUILD_MPI=on \
       -DMPI_CXX_COMPILER=${MPICXX} \
       -DCMAKE_CXX_COMPILER=${CXX} \
       -DKokkos_ENABLE_HIP_MULTIPLE_KERNEL_INSTANTIATIONS=ON \
-      -DCMAKE_HIPFLAGS="--offload-arch=gfx90a" \
+      -DCMAKE_HIPFLAGS="--offload-arch=${GPU_ARCH}" \
       -DCMAKE_CXX_FLAGS="-fdenormal-fp-math=ieee -fgpu-flush-denormals-to-zero -munsafe-fp-atomics -I$MPICH_DIR/include" \
       -DMKL_INCLUDE_DIR="/tmp" \
       -DUSE_MKLDNN=OFF \
